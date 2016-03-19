@@ -1,8 +1,8 @@
 
-set othermajor(spades) hearts
-set othermajor(hearts) spades
-set otherminor(diamonds) clubs
-set otherminor(clubs) diamonds
+set otherMajor(spades) hearts
+set otherMajor(hearts) spades
+set otherMinor(diamonds) clubs
+set otherMinor(clubs) diamonds
 
 defvector tenaceVec(1) 1 0 1 0 0
 defvector tenaceVec(2) 1 0 0 1 0
