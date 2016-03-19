@@ -3,19 +3,20 @@
 # needs my utility.tcl
 
 proc 1n { hand } {
-   if { ![ semibalanced $hand ] } { return 0 }
-   if { [ hcp $hand ] > 17 } { return 0 }
-   if { [ hcp $hand ] < 15 } { return 0 }
-
-   return 1
+   # if { ![ semibalanced $hand ] } { return 0 }
+   # if { [ hcp $hand ] > 17 } { return 0 }
+   # if { [ hcp $hand ] < 15 } { return 0 }
+   if {[ntDef $hand 15 17]} {return 1}
+   return 0
 }
 
 proc 2n { hand } {
-   if { ![ semibalanced $hand ] } { return 0 }
-   if { [ hcp $hand ] > 22 } { return 0 }
-   if { [ hcp $hand ] < 20 } { return 0 }
+   # if { ![ semibalanced $hand ] } { return 0 }
+   # if { [ hcp $hand ] > 22 } { return 0 }
+   # if { [ hcp $hand ] < 20 } { return 0 }
 
-   return 1
+   if {[ntDef $hand 20 22]} {return 1}
+   return 0
 }
 
 # 1d opening assuming 15-17 NT
@@ -90,7 +91,7 @@ proc 1c { hand } {
 defvector weak2quality 2 2 2 1 1
 defvector suithcp 4 3 2 1
 
-proc multi2D { hand } {
+proc multi2d { hand } {
    if { [ hcp $hand ] < 4 || [ hcp $hand ] > 10 } { return 0 }
 
    set s [ spades $hand ]
@@ -135,4 +136,35 @@ proc multi2D { hand } {
    }
 
    return 1
+}
+
+proc 2h { hand } {
+   set hcph [ hcp $hand ]
+   set cc [ clubs $hand ]
+   set dd [ diamonds $hand ]
+   set hh [ hearts $hand ]
+   set ss [ spades $hand ]
+
+   if {$hcph < 10 || $hcph > 15} { reject }
+
+   if {$ss == 3 && $hh == 4 && $dd == 1} {accept}
+   if {$ss == 4 && $hh == 3 && $dd == 1} {accept}
+   if {$ss == 4 && $hh == 4 && $dd == 1} {accept}
+   if {$ss == 4 && $hh == 4 && $dd == 0} {accept}
+
+   reject
+}
+
+proc 2s { hand } {
+   set hcph [ hcp $hand ]
+   set cc [ clubs $hand ]
+   set dd [ diamonds $hand ]
+   set ss [ spades $hand ]
+
+   if {$hcph < 5 || $hcph > 10} { reject }
+   if {$ss} {
+      if {$cc == 5 || $dd == 5} { accept }
+   }
+
+   reject
 }
