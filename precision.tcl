@@ -83,7 +83,6 @@ proc 2c { hand } {
 }
 
 proc 1c { hand } {
-   if { [ hcp $hand ] == 16 && [ balanced $hand ] } { return 0 }
    if { [ hcp $hand ] < 16 } { return 0 }
    return 1
 }
@@ -162,9 +161,80 @@ proc 2s { hand } {
    set ss [ spades $hand ]
 
    if {$hcph < 5 || $hcph > 10} { reject }
-   if {$ss} {
-      if {$cc == 5 || $dd == 5} { accept }
+   if {$ss == 5} {
+      if {$cc >= 5 || $dd >= 5} { accept }
    }
 
    reject
+}
+
+proc 1c1d { hand } {
+   if { [ hcp $hand ] < 8 } { return 1 }
+   return 0
+}
+
+proc 1c1h { hand } {
+   set hcph [ hcp $hand ]
+   if { $hcph > 7 && [ heartShape $hand ] } { return 1 }
+   if { $hcph > 13 } {
+      if { [ anyBalanced $hand ] } { return 1 }
+      if { [ any5m332 $hand ] } { return 1 }
+      if { $hcph < 17 } {
+         if { [ any5m422 $hand ] } { return 1 }
+      }
+   }
+   return 0
+}
+
+proc 1c1s { hand } {
+   set hcph [ hcp $hand ]
+   if { $hcph > 7 && [ spadeShape $hand ] } { return 1 }
+   return 0
+}
+
+proc 1c1n { hand } {
+   set hcph [ hcp $hand ]
+   if { $hcph < 8 || $hcph > 13 } { return 0 }
+   if { [ anyBalanced $hand ] } { return 1 }
+   if { [ any5m332 $hand ] } { return 1 }
+   if { [ any5m422 $hand ] && $hcph < 11 } { return 1 }
+   return 0
+}
+
+# Works only if the balanced hands are already excluded (1c 1h/n)
+proc 1c2c { hand } {
+   set hcph [ hcp $hand ]
+   if { $hcph < 8 } { return 0 }
+   if { [ clubShape $hand ] } { return 1 }
+   return 0
+}
+
+# Works only if the balanced hands are already excluded (1c 1h/n)
+proc 1c2d { hand } {
+   set hcph [ hcp $hand ]
+   if { $hcph < 8 } { return 0 }
+   if { [ diamondShape $hand ] } { return 1 }
+   return 0
+}
+
+proc 1c2h { hand } {
+   set hcph [ hcp $hand ]
+   if { $hcph < 8 } { return 0 }
+   if { [ hearts $hand ] == 4 && [ diamonds $hand ] == 4 } {
+      if { [ spades $hand ] == 4 || [ clubs $hand ] == 4 } {
+         return 1
+      }
+   }
+   return 0
+}
+
+proc 1c2s { hand } {
+   set hcph [ hcp $hand ]
+   if { $hcph < 8 } { return 0 }
+   if { [ spades $hand ] == 4 && [ clubs $hand ] == 4 } {
+      if { [ hearts $hand ] == 4 || [ diamonds $hand ] == 4 } {
+         return 1
+      }
+   }
+   return 0
 }

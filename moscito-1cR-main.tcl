@@ -1,6 +1,6 @@
 source lib.ivannp/shapes.tcl
 source lib.ivannp/utility.tcl
-source lib.ivannp/precision.tcl
+source lib.ivannp/moscito.tcl
 
 # opening counts 1c, 1d, ...
 set openingCounts(1) 0
@@ -15,32 +15,33 @@ set openingCounts(9) 0
 set openingCounts(10) 0
 
 set accepted 0
+set unknown 0
 
 main {
    global openingCounts
 
-   # The oder is important. For example, check the balanced hands first - to
-   # exclude them from other openings if there is an overlap.
-   if { [1n west] } {
-      incr openingCounts(5)
-   } elseif { [2n west] } {
-      incr openingCounts(10)
-   } elseif { [1h west] } {
-      incr openingCounts(3)
-   } elseif { [1s west] } {
-      incr openingCounts(4)
-   } elseif { [2c west] } {
-      incr openingCounts(6)
-   } elseif { [2s west] } {
-      incr openingCounts(9)
-   } elseif { [multi2d west] } {
-      incr openingCounts(7)
-   } elseif { [2h west] } {
-      incr openingCounts(8)
-   } elseif { [1c west] } {
-      incr openingCounts(1)
-   } elseif { [1d west] } {
+   if { [ 1c west ] == 0 } { reject }
+
+   if { [1c1d east] } {
       incr openingCounts(2)
+   } elseif { [1c2d east] } {
+      incr openingCounts(7)
+   } elseif { [1c1h east] } {
+      incr openingCounts(3)
+   } elseif { [1c1s east] } {
+      incr openingCounts(4)
+   } elseif { [1c1n east] } {
+      incr openingCounts(5)
+   } elseif { [1c2c east] } {
+      incr openingCounts(6)
+   } elseif { [1c2h east] } {
+      incr openingCounts(8)
+   } elseif { [1c2s east] } {
+      incr openingCounts(9)
+   } elseif { [1c2n east] } {
+      incr openingCounts(10)
+   } else {
+      incr unknown
    }
 
    incr accepted
@@ -61,4 +62,5 @@ deal_finished {
    puts "2h: [expr round((($openingCounts(8) + 0.0 ) / $accepted ) * 10000.0)/100.0]% ($openingCounts(8)) times"
    puts "2s: [expr round((($openingCounts(9) + 0.0 ) / $accepted ) * 10000.0)/100.0]% ($openingCounts(9)) times"
    puts "2n: [expr round((($openingCounts(10) + 0.0 ) / $accepted ) * 10000.0)/100.0]% ($openingCounts(10)) times"
+   puts "other: [expr round((($unknown + 0.0 ) / $accepted ) * 10000.0)/100.0]% ($unknown) times"
 }
