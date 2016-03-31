@@ -1,3 +1,6 @@
+# Adds double-dummy analysis to the output
+#     ./deal -i lib.ivannp/test-main.tcl 5
+
 source lib.ivannp/shapes.tcl
 source lib.ivannp/utility.tcl
 source lib.ivannp/precision.tcl
@@ -62,8 +65,6 @@ main {
 
    foreach dd_denom { clubs diamonds hearts spades notrump } {
       foreach dd_hand { north east south west } {
-         # set first [ string toupper [ string range $dd_hand 0 0 ] ]
-         # set str_tricks "$first"
          set tr [deal::tricks $dd_hand $dd_denom]
 
          if { $tr > 9 } {
