@@ -4,6 +4,7 @@
 source lib.ivannp/shapes.tcl
 source lib.ivannp/utility.tcl
 source lib.ivannp/precision.tcl
+source lib.ivannp/parscore2.tcl
 
 set accepted 0
 
@@ -58,6 +59,8 @@ main {
 
    set_board_info $first_hand $vul
 
+   set par_score [ parscore2 $first_hand "$vul" tricks ]
+
    set dir_tricks(north) "N"
    set dir_tricks(east) "E"
    set dir_tricks(south) "S"
@@ -65,7 +68,8 @@ main {
 
    foreach dd_denom { clubs diamonds hearts spades notrump } {
       foreach dd_hand { north east south west } {
-         set tr [deal::tricks $dd_hand $dd_denom]
+         # set tr [deal::tricks $dd_hand $dd_denom]
+         set tr $tricks($dd_hand:$dd_denom)
 
          if { $tr > 9 } {
             set dir_tricks($dd_hand) "$dir_tricks($dd_hand) $tr"
@@ -85,6 +89,8 @@ main {
    append_comment "----------------"
 
    append_comment ""
+
+   append_comment "parscore: $par_score"
 
    accept
 }
