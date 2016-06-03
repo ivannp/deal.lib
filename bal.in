@@ -1,0 +1,11 @@
+
+# our headers
+source lib.ivannp/shapes.tcl
+source lib.ivannp/utility.tcl
+
+main {
+	# if { [ ntDef west 15 17 ] && [ hasTenace west hearts ] } { accept }
+   if { [ ntDef west 15 17 ] && [ top5 west hearts ] >= 1 } { accept }
+
+   reject
+}
