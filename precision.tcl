@@ -238,3 +238,32 @@ proc 1c2s { hand } {
    }
    return 0
 }
+
+proc 1cBalPos { hand min max } {
+
+   set hcph [ hcp $hand ]
+
+   if { $hcph < $min } { return 0 }
+   if { $hcph > $max } { return 0 }
+
+   set heh [hearts $hand ]
+   if { $heh > 4 } { return 0 }
+   set sph [spades $hand ]
+   if { $sph > 4 } { return 0 }
+   set clh [clubs $hand ]
+   if { $clh > 5 } { return 0 }
+   set dih [diamonds $hand ]
+   if { $dih > 5 } { return 0 }
+
+   if { $clh == 5 } {
+      if { $sph > 3 || $heh > 3 || $dih > 3 } { return 0 }
+      if { $sph < 2 || $heh < 2 || $dih < 2 } { return 0 }
+   }
+
+   if { $dih == 5 } {
+      if { $sph > 3 || $heh > 3 || $clh > 3 } { return 0 }
+      if { $sph < 2 || $heh < 2 || $clh < 2 } { return 0 }
+   }
+
+   return 1
+}
