@@ -205,7 +205,11 @@ proc 1c1n { hand } {
 proc 1c2c { hand } {
    set hcph [ hcp $hand ]
    if { $hcph < 8 } { return 0 }
-   if { [ clubShape $hand ] } { return 1 }
+   if { [ clubShape $hand ] && [ clubs $hand ] > 4 } {
+      if { [ clubs $hand ] > 5 } { return 1 }
+      if { [ diamonds $hand ] < 4 && [ hearts $hand ] < 4 && [ spades $hand ] < 4 } { return 0 }
+      return 1
+   }
    return 0
 }
 
